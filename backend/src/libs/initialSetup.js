@@ -11,7 +11,8 @@ inicio.createRoles = async()=>{
         const values = await Promise.all(
             [
                 new Role({name: "user"}).save(),
-                new Role({name: "admin"}).save()
+                new Role({name: "admin"}).save(),
+                new Role({name: "auditor"}).save()
             ]
         )
         console.log(values)
@@ -22,22 +23,21 @@ inicio.createRoles = async()=>{
 
 inicio.createAdmin = async() =>{
     try{
-        const user = await User.findOne({emai: "admin@gmail.com"})
+        const user = await User.findOne({email: "admin@gmail.com"})
         const roles= await Role.find({name: {$in: ['admin']}})
-        if (!user)
-        await User.create({
-            username: 'admin',
-            email: 'admin@gmail.com',
-            password: await bcrypt.hash("Admin123",10),
-            roles: roles.map((role) => role._id)
-            
-        })
-    
-        console.log('Administrador creado')
-
+        if (!user){
+            await User.create({
+                username: 'admin',
+                email: 'admin@gmail.com',
+                password: await bcrypt.hash("Admin123",10),
+                roles: roles.map((role) => role._id)
+                
+            })
+        
+            console.log('Administrador creado')
+        }
     }catch(error){
         console.log(error)
-        
     }
     
 }

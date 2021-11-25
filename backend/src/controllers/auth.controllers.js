@@ -51,28 +51,30 @@ authCtrl.signUp = async (req, res) => {
     }
 }
 authCtrl.signIn = async (req, res) => {
-    res.json('unsario ingresa')
+    //res.json('unsario ingresa')
     try{
-        const userFound = await User.findOne({email: req.body.email}).populate('roles')
+        const userFound = await User.findOne({username: req.body.username}).populate('roles')
 
         if(!userFound) return res.status(400).json ({message: 'Usuario no existe'})
 
         const matchPassword = await User.comparePassword(req.body.password,userFound.password)
 
         if(!matchPassword)
-            return res.status(400).josn({
+            return res.status(400).json({
                 token: null,
                 message: 'Clave incorrecta'
             })
 
             const token = jwt.sign({
-                id: savedUser._id
+                id: userFound._id
             }, config.SECRET, {
                 expiresIn: 86400
             }) //24 horas
+
+            res.json({token});
              
     }catch(error){
-        cosole.log(error)
+        console.log(error)
     }
 
 }

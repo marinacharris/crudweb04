@@ -1,7 +1,7 @@
 const User = require('../models/User')
 
 const validar = {}
-const ROLES = ["user", "admin"]
+const ROLES = ["user", "admin", "auditor"]
 
 validar.checkDuplicateUsernameOrEmail = async(req, res, next)=>{
     try{

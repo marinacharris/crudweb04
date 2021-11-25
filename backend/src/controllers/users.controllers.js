@@ -25,7 +25,7 @@ userCtrl.createUser = async (req, res) =>{
             roles:rolesFound.map((role)=> role._id)
         })
 
-        newUser.password = await User.ecryptPassword(newUser.password)
+        newUser.password = await User.encryptPassword(newUser.password)
         const savedUser = await newUser.save();
         res.json('Usuario creado')
         return res.status(200).json({

@@ -5,9 +5,9 @@ const {validar, autorizar} = require('../middlewares')
 
 router.route('/')
     .get(getUsers)
-    .post(createUser);
+    .post([autorizar.verifyToken, autorizar.isAdmin, validar.checkDuplicateUsernameOrEmail],createUser);
 
 router.route('/:id')
-    .delete(deleteUser)
+    .delete([autorizar.verifyToken, autorizar.isAdmin], deleteUser)
 
 module.exports = router;

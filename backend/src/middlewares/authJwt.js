@@ -30,6 +30,44 @@ autorizar.isAdmin = async(req,res, next) =>{
     try{
         const  user = await User.findById(req.userId);
         const roles = await Role.find({_id: {$in: user.roles}})
+
+        for (let i = 0; i<roles.length; i++){
+            if (roles[i].name === "admin"){
+                next();
+                return;
+            }
+        }
+        return res.status(403).json({
+            message: 'Requiere el rol de adminnistrador'
+        })
+    }
+    catch(error){
+        console.log(error)
+        return res.status(500).send({message: error})
+
+    }
+
+}
+
+autorizar.isAuditor = async(req,res, next) =>{
+    try{
+        const  user = await User.findById(req.userId);
+        const roles = await Role.find({_id: {$in: user.roles}})
+
+        for (let i = 0; i<roles.length; i++){
+            if (roles[i].name === "auditor"){
+                next();
+                return;
+            }
+        }
+        return res.status(403).json({
+            message: 'Requiere el rol de auditor'
+        })
+    }
+    catch(error){
+        console.log(error)
+        return res.status(500).send({message: error})
+
     }
 
 }
